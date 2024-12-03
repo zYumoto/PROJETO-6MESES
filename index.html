@@ -229,26 +229,21 @@
             background-color: #555;
         }
 
-        /* Responsividade */
-        @media (max-width: 768px) {
-            .photo-container {
-                width: 90%;
-                aspect-ratio: 1/1.5;
-            }
+       /* Responsividade */
+@media (max-width: 768px) {
+    .photo-container {
+        width: 100%; /* Ocupa toda a largura da tela */
+        aspect-ratio: 3/4; /* Mantém a proporção */
+        max-width: 90%; /* Margens laterais para evitar bordas extremas */
+    }
 
-            .player {
-                flex-direction: column;
-                padding: 15px;
-            }
+    .photo-container img {
+        width: 100%; /* Ajusta a imagem ao contêiner */
+        height: auto; /* Mantém a proporção da imagem */
+        object-fit: cover; /* Garante que a imagem ocupe todo o espaço sem deformar */
+    }
+}
 
-            .player img {
-                margin-bottom: 10px;
-            }
-
-            .progress-bar {
-                width: 90%;
-            }
-        }
     </style>
 </head>
 <body>
