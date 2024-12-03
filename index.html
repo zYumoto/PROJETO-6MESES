@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projeto 6 mesês</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #6a0dad, #2b2b4f);
+            position: relative;
+            color: #fff;
+        }
+
+        .music-popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(0, 0, 0, 0.9);
+            color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            z-index: 1000;
+        }
+
+        .music-popup h2 {
+            margin-bottom: 20px;
+        }
+
+        .music-popup .track {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            cursor: pointer;
+            background-color: #333;
+            padding: 10px;
+            border-radius: 8px;
+            transition: background-color 0.2s;
+        }
+
+        .music-popup .track:hover {
+            background-color: #444;
+        }
+
+        .music-popup img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%; /* Ícone redondo */
+            margin-right: 10px;
+        }
+
+        .music-popup .track-name {
+            color: #fff;
+            font-size: 16px;
+        }
+
+        .header-text, .subtext {
+            display: none;
+        }
+
+        .header-text.visible, .subtext.visible {
+            display: block;
+            background-color: rgba(0, 0, 0, 0.6);
+            color: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            width: 90%;
+            margin-bottom: 20px;
+        }
+
+        .photo-container {
+            width: 828px;
+            height: 1472px;
+            background-color: #fff;
+            border: 5px solid #333;
+            border-radius: 15px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .photo-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+            border-radius: 15px;
+        }
+
+        .photo-container img.active {
+            opacity: 1;
+        }
+
+        .arrow-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(0, 0, 0, 0.5);
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            font-size: 18px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .arrow-btn.left {
+            left: 10px;
+        }
+
+        .arrow-btn.right {
+            right: 10px;
+        }
+
+        .arrow-btn:hover {
+            background-color: rgba(0, 0, 0, 0.7);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+        }
+
+        .counter {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #ddd;
+            background-color: rgba(0, 0, 0, 0.3);
+            padding: 10px;
+            border-radius: 8px;
+        }
+
+        .player {
+            position: relative;
+            width: 600px;
+            background-color: #333;
+            border-radius: 50px;
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            color: #fff;
+            margin: 20px 0;
+            z-index: 999;
+        }
+
+        .player img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%; /* Ícone da música redondo */
+            margin-right: 10px;
+        }
+
+        .player .track-info {
+            flex-grow: 1;
+            text-align: center;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+
+        .player .progress-bar {
+            width: 100%;
+            height: 5px;
+            background-color: #444;
+            border-radius: 50px;
+            margin: 0 10px;
+            position: relative;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+
+        .player .progress {
+            height: 100%;
+            background-color: #1DB954;
+            border-radius: 50px;
+            width: 0%; /* Initial state */
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .player .progress-dot {
+            position: absolute;
+            top: -2px;
+            left: 0;
+            width: 8px;
+            height: 8px;
+            background-color: #1DB954;
+            border-radius: 50%;
+            transform: translateX(-50%);
+            transition: left 0.1s ease-in-out;
+        }
+
+        .player button {
+            background-color: #444;
+            border: none;
+            border-radius: 50px;
+            color: #fff;
+            padding: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .player button:hover {
+            background-color: #555;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="music-popup" id="musicPopup">
+        <h2>Escolha suas músicas</h2>
+        <div class="track" onclick="playMusic('music/1.mp3', 'Someone to You', 'music/pic1.jpg')">
+            <img src="music/pic1.jpg" alt="Capa 1">
+            <div class="track-name">Someone to You</div>
+        </div>
+        <div class="track" onclick="playMusic('music/2.mp3', 'Talking to the Moon', 'music/pic2.jpg')">
+            <img src="music/pic2.jpg" alt="Capa 2">
+            <div class="track-name">Talking to the Moon</div>
+        </div>
+        <div class="track" onclick="playMusic('music/3.mp3', 'Primeiro Beijo', 'music/pic3.jpg')">
+            <img src="music/pic3.jpg" alt="Capa 3">
+            <div class="track-name">Primeiro Beijo</div>
+        </div>
+        <button onclick="closePopup()">Fechar</button>
+    </div>
+
+    <div class="header-text" id="headerText">6 meses com você</div>
+    <div class="subtext" id="subText">Seis meses de amor, risos e momentos inesquecíveis. Cada dia ao seu lado é um presente, e cada lembrança compartilhada é um capítulo da nossa história. Obrigado por fazer parte da minha vida e por me mostrar o que realmente importa. Te amo mais do que palavras podem expressar.</div>
+
+    <div class="photo-container" id="photoContainer">
+        <img src="pics/1.jpg" class="active" alt="Foto 1">
+        <img src="pics/2.jpg" alt="Foto 2">
+        <img src="pics/3.jpg" alt="Foto 3">
+        <img src="pics/4.jpg" alt="Foto 4">
+        <img src="pics/5.jpg" alt="Foto 5">
+        <button class="arrow-btn left" onclick="prevPhoto()">&lt;</button>
+        <button class="arrow-btn right" onclick="nextPhoto()">&gt;</button>
+    </div>
+
+    <div class="counter" id="counter">00m 00d 00h 00m 00s</div>
+
+    <!-- Player de música -->
+    <div class="player" id="musicPlayer" style="display: none;">
+        <img id="trackCover" src="" alt="Capa da Música">
+        <div class="track-info" id="trackInfo"></div>
+        <button id="playPauseBtn" onclick="togglePlayPause()">▶</button>
+        <div class="progress-bar" id="progressBar" onclick="seekMusic(event)">
+            <div class="progress" id="progress"></div>
+            <div class="progress-dot" id="progressDot"></div>
+        </div>
+    </div>
+
+    <script>
+        let currentIndex = 0;
+const photos = document.querySelectorAll('.photo-container img');
+const counter = document.getElementById('counter');
+const musicPlayer = document.getElementById('musicPlayer');
+const trackInfo = document.getElementById('trackInfo');
+const playPauseBtn = document.getElementById('playPauseBtn');
+const progressBar = document.getElementById('progressBar');
+const progress = document.getElementById('progress');
+const progressDot = document.getElementById('progressDot');
+const trackCover = document.getElementById('trackCover');
+
+let audio;
+let isPlaying = false;
+let timer;
+
+// Atualiza o contador de tempo
+const startDate = new Date('2024-06-07T00:00:00');
+setInterval(updateCounter, 1000);
+
+// Configura a troca automática de slides
+setInterval(autoSlide, 3000);
+
+function nextPhoto() {
+    currentIndex = (currentIndex + 1) % photos.length;
+    showPhoto(currentIndex);
+}
+
+function prevPhoto() {
+    currentIndex = (currentIndex - 1 + photos.length) % photos.length;
+    showPhoto(currentIndex);
+}
+
+function showPhoto(index) {
+    photos.forEach((photo, i) => {
+        photo.classList.remove('active');
+        if (i === index) {
+            photo.classList.add('active');
+        }
+    });
+}
+
+function autoSlide() {
+    nextPhoto();
+}
+
+function updateCounter() {
+    const now = new Date();
+    const diff = now - startDate;
+
+    // Calculando meses, dias, horas, minutos e segundos
+    const months = Math.floor(diff / (1000 * 60 * 60 * 24 * 30)); // Aproximação de 30 dias por mês
+    const days = Math.floor((diff % (1000 * 60 * 60 * 24 * 30)) / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+    counter.textContent = `${months}m ${days}d ${hours}h ${minutes}m ${seconds}s`;
+}
+
+
+
+        function playMusic(src, title, cover) {
+            if (audio) {
+                audio.pause();
+                audio = null;
+                isPlaying = false;
+                playPauseBtn.textContent = '▶';
+            }
+
+            audio = new Audio(src);
+            audio.play();
+            isPlaying = true;
+            playPauseBtn.textContent = '❚❚';
+            trackInfo.textContent = title;
+            trackCover.src = cover;
+
+            musicPlayer.style.display = 'flex';
+
+            audio.onended = () => {
+                clearInterval(timer);
+                musicPlayer.style.display = 'none';
+            };
+
+            startTime = Date.now();
+            timer = setInterval(() => {
+                const elapsedTime = Date.now() - startTime;
+                const progressPercentage = (audio.currentTime / audio.duration) * 100;
+                progress.style.width = `${progressPercentage}%`;
+                progressDot.style.left = `${progressPercentage}%`;
+            }, 100);
+        }
+
+        function togglePlayPause() {
+            if (isPlaying) {
+                audio.pause();
+                isPlaying = false;
+                playPauseBtn.textContent = '▶';
+            } else {
+                audio.play();
+                isPlaying = true;
+                playPauseBtn.textContent = '❚❚';
+            }
+        }
+
+        function seekMusic(event) {
+            const progressBarWidth = progressBar.offsetWidth;
+            const clickPosition = event.offsetX;
+            const newTime = (clickPosition / progressBarWidth) * audio.duration;
+            audio.currentTime = newTime;
+        }
+
+        function closePopup() {
+            const popup = document.getElementById('musicPopup');
+            popup.style.display = 'none';
+            document.getElementById('headerText').classList.add('visible');
+            document.getElementById('subText').classList.add('visible');
+            setTimeout(() => {
+                document.getElementById('photoContainer').style.opacity = 1;
+            }, 1000);
+        }
+
+        // Fechar popup ao clicar na música
+        document.querySelectorAll('.track').forEach(track => {
+            track.addEventListener('click', closePopup);
+        });
+    </script>
+</body>
+</html>
