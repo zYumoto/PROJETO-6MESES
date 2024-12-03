@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Projeto 6 mesês</title>
+    <title>Projeto 6 Meses</title>
     <style>
         body {
             display: flex;
@@ -54,7 +54,7 @@
         .music-popup img {
             width: 40px;
             height: 40px;
-            border-radius: 50%; /* Ícone redondo */
+            border-radius: 50%;
             margin-right: 10px;
         }
 
@@ -79,8 +79,10 @@
         }
 
         .photo-container {
-            width: 828px;
-            height: 1472px;
+            width: 90%;
+            max-width: 400px;
+            height: auto;
+            aspect-ratio: 3/4;
             background-color: #fff;
             border: 5px solid #333;
             border-radius: 15px;
@@ -141,7 +143,7 @@
 
         .counter {
             margin-top: 20px;
-            font-size: 18px;
+            font-size: 16px;
             color: #ddd;
             background-color: rgba(0, 0, 0, 0.3);
             padding: 10px;
@@ -150,7 +152,8 @@
 
         .player {
             position: relative;
-            width: 600px;
+            width: 90%;
+            max-width: 400px;
             background-color: #333;
             border-radius: 50px;
             padding: 10px;
@@ -166,7 +169,7 @@
         .player img {
             width: 50px;
             height: 50px;
-            border-radius: 50%; /* Ícone da música redondo */
+            border-radius: 50%;
             margin-right: 10px;
         }
 
@@ -194,7 +197,7 @@
             height: 100%;
             background-color: #1DB954;
             border-radius: 50px;
-            width: 0%; /* Initial state */
+            width: 0%;
             position: absolute;
             top: 0;
             left: 0;
@@ -224,6 +227,27 @@
 
         .player button:hover {
             background-color: #555;
+        }
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .photo-container {
+                width: 90%;
+                aspect-ratio: 1/1.5;
+            }
+
+            .player {
+                flex-direction: column;
+                padding: 15px;
+            }
+
+            .player img {
+                margin-bottom: 10px;
+            }
+
+            .progress-bar {
+                width: 90%;
+            }
         }
     </style>
 </head>
